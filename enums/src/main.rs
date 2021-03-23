@@ -1,4 +1,3 @@
-#[derive(Debug)]
 enum Language {
     C,
     Rust,
@@ -7,6 +6,15 @@ enum Language {
 }
 
 impl Language {
+    fn name(&self) -> &str {
+        match self {
+            Language::C => "C",
+            Language::JavaScript => "JavaScript",
+            Language::TypeScript => "TypeScript",
+            Language::Rust => "Rust",
+        }
+    }
+
     fn react_to(&self) -> &str {
         match self {
             Language::C => "🤮",
@@ -35,6 +43,7 @@ fn main() {
 
     match language_im_learning {
         Some(lang) => {
+            println!("I'm currently learning: {}", lang.name());
             println!(
                 "What do you think of the language I'm learning? -- {}",
                 lang.react_to()
