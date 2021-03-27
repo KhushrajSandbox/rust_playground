@@ -7,7 +7,7 @@ fn main() {
 }
 
 fn add_4 (mut x: &i32) -> () {
-    x = &4;
+    *x += 4;
 }
 
 fn get_five() -> i32 {
