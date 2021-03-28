@@ -1,12 +1,7 @@
 fn main() {
     // Vectors
 
-    let vec = vec![
-        String::from("1"),
-        String::from("2"),
-        String::from("3"),
-        String::from("4"),
-    ];
+    let vec = vec!["1", "2", "3", "4"];
 
     match vec.get(2) {
         Some(third) => println!("Third element: {}", third),
@@ -28,9 +23,9 @@ fn main() {
     // Hashmaps
     use std::collections::HashMap;
     let mut scores = HashMap::new();
-    scores.insert(String::from("Khushraj"), 100);
+    scores.insert("Khushraj", 100);
 
-    scores.entry(String::from("Khushraj2")).or_insert(50);
+    scores.entry("Khushraj2").or_insert(50);
 
     println!("{:#?}", scores);
 }
