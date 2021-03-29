@@ -1,5 +1,7 @@
-use minigrep;
-use std::{env, error::Error, fs, process};
+use {
+    minigrep,
+    std::{env, error::Error, fs, process},
+};
 
 pub struct Config {
     pub query: String,
