@@ -1,5 +1,5 @@
 use {
-    minigrep,
+    minigrep as lib,
     std::{env, error::Error, fs, process},
 };
 
@@ -38,13 +38,15 @@ fn main() -> Result<(), Box<dyn Error>> {
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     let contents = fs::read_to_string(config.filename)?;
 
-    for line in minigrep::search(minigrep::Config {
+    lib::search(lib::Config {
         query: &config.query,
         contents: &contents,
         is_case_sensitive: config.is_case_sensitive,
-    }) {
+    })
+    .iter()
+    .for_each(|line| {
         println!("{}", line);
-    }
+    });
 
     Ok(())
 }
