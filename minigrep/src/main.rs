@@ -1,20 +1,16 @@
 use minigrep;
 use std::{env, error::Error, fs, process};
 
-pub struct Config<'a> {
-    pub query: &'a str,
-    pub filename: &'a str,
+pub struct Config {
+    pub query: String,
+    pub filename: String,
     pub is_case_sensitive: bool,
 }
 
-impl Config<'_> {
-    pub fn new(args: &[String]) -> Result<Config, &str> {
-        if args.len() < 3 {
-            return Err("not enough arguments");
-        }
-
-        let query = &args[1];
-        let filename = &args[2];
+impl Config {
+    pub fn new(mut args: env::Args) -> Result<Config, &'static str> {
+        let query = args.nth(1).ok_or("Query argument missing")?;
+        let filename = args.next().ok_or("File argument missing")?;
         let is_case_sensitive = env::var("CASE_INSENSITIVE").is_err();
 
         Ok(Config {
@@ -25,9 +21,8 @@ impl Config<'_> {
     }
 }
 
-fn main() {
-    let args: Vec<String> = env::args().collect();
-    let config = Config::new(&args).unwrap_or_else(|err| {
+fn main() -> Result<(), Box<dyn Error>> {
+    let config = Config::new(env::args()).unwrap_or_else(|err| {
         println!("Problem parsing arguments: {}", err);
         process::exit(1);
     });
@@ -35,11 +30,7 @@ fn main() {
     println!("Searching for {}", config.query);
     println!("In file {}", config.filename);
 
-    if let Err(e) = run(config) {
-        println!("Application error: {}", e);
-
-        process::exit(1);
-    }
+    run(config)
 }
 
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
