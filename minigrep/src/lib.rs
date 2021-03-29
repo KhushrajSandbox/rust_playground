@@ -11,20 +11,17 @@ pub fn search<'c>(config: Config<'_, 'c>) -> Vec<&'c str> {
         config.query.to_lowercase()
     };
 
-    let mut results = Vec::new();
-    for line in config.contents.lines() {
-        if config.is_case_sensitive {
-            if line.contains(query.as_str()) {
-                results.push(line);
+    config
+        .contents
+        .lines()
+        .filter(|line| {
+            if config.is_case_sensitive {
+                line.contains(&query)
+            } else {
+                line.to_lowercase().contains(&query)
             }
-        } else {
-            if line.to_lowercase().contains(query.as_str()) {
-                results.push(line);
-            }
-        }
-    }
-
-    results
+        })
+        .collect()
 }
 
 #[cfg(test)]
