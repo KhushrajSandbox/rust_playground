@@ -1,3 +1,5 @@
+use std::borrow::Cow;
+
 pub struct Config<'q, 'c> {
     pub query: &'q str,
     pub contents: &'c str,
@@ -5,10 +7,10 @@ pub struct Config<'q, 'c> {
 }
 
 pub fn search<'c>(config: Config<'_, 'c>) -> Vec<&'c str> {
-    let query = if config.is_case_sensitive {
-        config.query.to_owned()
+    let query: Cow<'_, str> = if config.is_case_sensitive {
+        config.query.into()
     } else {
-        config.query.to_lowercase()
+        config.query.to_lowercase().into()
     };
 
     config
@@ -16,9 +18,9 @@ pub fn search<'c>(config: Config<'_, 'c>) -> Vec<&'c str> {
         .lines()
         .filter(|line| {
             if config.is_case_sensitive {
-                line.contains(&query)
+                line.contains(query.as_ref())
             } else {
-                line.to_lowercase().contains(&query)
+                line.to_lowercase().contains(query.as_ref())
             }
         })
         .collect()
