@@ -1,8 +1,8 @@
 use add_one;
 use add_two;
+use adder;
 
 fn main() {
-    let num = 1;
-    println!("Added one: {}", add_one::add_one(num));
-    println!("Added two: {}", add_two::add_two(num));
+    println!("Added one: {}", add_one::add_one(adder::NUM));
+    println!("Added two: {}", add_two::add_two(adder::NUM));
 }
